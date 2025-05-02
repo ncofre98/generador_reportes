@@ -1,0 +1,29 @@
+<style>
+    .row {
+      display: flex;
+      width: 100%;    /* ocupa todo el ancho del padre */
+      height: 100%;   /* ocupa todo el alto del padre */
+    }
+    .column {
+      flex: 1;                /* las columnas se dividen equitativamente */
+      border: 1px solid #333; /* para que veas el borde cubriendo todo */
+      box-sizing: border-box; /* incluye el borde en el tamaño total */
+      padding: 10px;          /* opcional, para separar el contenido */
+    }
+  </style>
+  
+  <div class="row" style="height: 400px;">
+    <div class="column">
+      <p>Esto es la columna A</p>
+      <p>Más contenido...</p>
+    </div>
+    <div class="column">
+      <h2>Columna B</h2>
+      <p>Contenido diverso.</p>
+    </div>
+    <div class="column">
+
+    </div>
+    <div class="column"></div>
+  </div>
+  

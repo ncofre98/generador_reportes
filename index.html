@@ -16,9 +16,15 @@
     <div id="report" class="report">
         <div class="wrapper">
             <div id="row-1" class="row">
-                <div class="logo" id="logo-left" onclick="uploadLogo('left')">Logo</div>
-                <div id="doc-title" contenteditable>Reporte Fotográfico</div>
-                <div class="logo" id="logo-right" onclick="uploadLogo('right')">Logo</div>
+                <div class="col">
+                    <div class="logo" id="logo-left" onclick="uploadLogo('left')">Logo</div>
+                </div>
+                <div class="col" style="flex: 2">
+                    <div id="doc-title" contenteditable>Reporte Fotográfico</div>
+                </div>
+                <div class="col">
+                    <div class="logo" id="logo-right" onclick="uploadLogo('right')">Logo</div>
+                </div>
                 <input type="file" id="logo-input" accept="image/*" style="display:none" />
             </div>
     
