@@ -28,20 +28,21 @@ body {
 
 .wrapper {
     border : var(--border);
-    /*border-right: none;*/
+    border-right: none;
 }
 
 .row {
     display: flex;
     width: 100%;
     height: 100%;
+    align-items: stretch;
 }
 
 .col {
     flex: 1;
     border-right: var(--border);
     border-bottom: var(--border);
-    padding: 10px;
+    padding: 1rem;
     align-content: center;
 }
 
@@ -76,13 +77,6 @@ body {
 
 #doc-title[contenteditable] {
     outline: none;
-}
-
-#row-2,
-#row-3 {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 0;
 }
 
 #row-3 {
