@@ -55,7 +55,7 @@ body {
 
 .logo {
     width: 150px;
-    height: 100px;
+    height: 80px;
     outline: 2px dashed #ccc;
     display: flex;
     align-items: center;
