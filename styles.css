@@ -140,6 +140,11 @@ body {
 
 @media print {
     /* Oculta todo excepto #report */
+    * {
+        image-resolution: 72dpi !important;
+    }
+
+
     body * {
       visibility: hidden;
     }
