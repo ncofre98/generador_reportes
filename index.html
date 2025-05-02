@@ -14,33 +14,35 @@
         Creador de reportes
     </h1>
     <div id="report" class="report">
-        <div id="row-1">
-            <div class="logo" id="logo-left" onclick="uploadLogo('left')">Logo</div>
-            <div id="doc-title" contenteditable>Reporte Fotográfico</div>
-            <div class="logo" id="logo-right" onclick="uploadLogo('right')">Logo</div>
-            <input type="file" id="logo-input" accept="image/*" style="display:none" />
-        </div>
-
-        <div id="row-2">
-            <div class="field"><span>OBRA:</span>
-                <div contenteditable>Título de la obra</div>
+        <div class="wrapper">
+            <div id="row-1" class="row">
+                <div class="logo" id="logo-left" onclick="uploadLogo('left')">Logo</div>
+                <div id="doc-title" contenteditable>Reporte Fotográfico</div>
+                <div class="logo" id="logo-right" onclick="uploadLogo('right')">Logo</div>
+                <input type="file" id="logo-input" accept="image/*" style="display:none" />
             </div>
-            <div class="field"><span>FECHA:</span><input type="date" /></div>
-        </div>
-
-        <div id="row-3">
-            <div class="field"><span>HORA DE ENTRADA:</span><input type="time" /></div>
-            <div class="field"><span>HORA DE SALIDA:</span><input type="time" /></div>
-            <div class="field"><span>SUCURSAL:</span>
-                <div contenteditable>---</div>
+    
+            <div id="row-2" class="row">
+                <div class="field"><span>OBRA:</span>
+                    <div contenteditable>Título de la obra</div>
+                </div>
+                <div class="field"><span>FECHA:</span><input type="date" /></div>
             </div>
+    
+            <div id="row-3" class="row">
+                <div class="field"><span>HORA DE ENTRADA:</span><input type="time" /></div>
+                <div class="field"><span>HORA DE SALIDA:</span><input type="time" /></div>
+                <div class="field"><span>SUCURSAL:</span>
+                    <div contenteditable>---</div>
+                </div>
+            </div>
+    
+            <div id="row-4" class="row">
+                <div contenteditable>Observaciones y comentarios...</div>
+            </div>
+    
+            <div id="row-5" class="row"></div>
         </div>
-
-        <div id="row-4">
-            <div contenteditable>Observaciones y comentarios...</div>
-        </div>
-
-        <div id="row-5"></div>
     </div>
 
         <button id="export-btn" onclick="exportPDF()">Exportar a PDF</button>

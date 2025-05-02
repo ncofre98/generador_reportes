@@ -5,9 +5,12 @@ function uploadLogo(side) {
         if (file) {
             const reader = new FileReader();
             reader.onload = e => {
-                document.getElementById('logo-' + side).innerHTML = '<img src="' + e.target.result + '" />';
+                const logo = document.getElementById('logo-' + side);
+                logo.innerHTML = '<img src="' + e.target.result + '" />';
+                logo.style.outline = 'none';
             };
             reader.readAsDataURL(file);
+            console.log(e.target)
         }
     };
     input.click();

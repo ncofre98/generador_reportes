@@ -1,3 +1,12 @@
+:root {
+    --border: 2px solid black;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     flex-direction: column;
@@ -15,6 +24,19 @@ body {
     padding: 20px;
 }
 
+.wrapper {
+    border : var(--border);
+    padding: 0 8px;
+}
+
+.row {
+    border-bottom: var(--border);
+}
+
+.field {
+    border: 0 var(--border) 0 var(--border);
+}
+
 #row-1 {
     display: flex;
     align-items: center;
@@ -22,9 +44,9 @@ body {
 }
 
 .logo {
-    width: 100px;
+    width: 150px;
     height: 100px;
-    border: 2px dashed #ccc;
+    outline: 2px dashed #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,6 +57,7 @@ body {
     max-width: 100%;
     max-height: 100%;
 }
+
 
 #doc-title {
     text-align: center;
@@ -48,9 +71,8 @@ body {
 
 #row-2,
 #row-3 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 #row-3 {
