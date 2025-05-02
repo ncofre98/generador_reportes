@@ -83,9 +83,24 @@ document.addEventListener('drop', e => {
 });
 
 function exportPDF() {
-    html2pdf().set({
-        margin: 0.5,
-        filename: 'reporte.pdf',
-        html2canvas: { scale: 2 }
-    }).from(document.getElementById('report')).save();
+    const element = document.getElementById('report');
+
+    // Esperar un tick para asegurar que todo esté renderizado
+    setTimeout(() => {
+        html2pdf().set({
+            margin: 0.5,
+            filename: 'reporte.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                scrollY: 0
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'letter',
+                orientation: 'portrait'
+            }
+        }).from(element).save();
+    }, 100); // pequeño retraso para permitir render completo
 }
