@@ -1,5 +1,7 @@
 :root {
     --border: 2px solid black;
+    --page-width: 8.5in;
+    --page-height: 11in;
 }
 
 * {
@@ -16,12 +18,12 @@ body {
 }
 
 .report {
-    max-width: 960px;
-    min-width: 960px;
-    border: 1px dashed rgb(189, 189, 189);
-    display: grid;
-    grid-row-gap: 20px;
-    padding: 20px;
+    max-width: var(--page-width);
+    min-width: var(--page-width);
+    min-height: var(--page-height);
+    max-height: var(--page-height);
+    outline: 3px solid rgb(235, 235, 235);
+    padding: 0 3rem;
 }
 
 .wrapper {
@@ -73,6 +75,7 @@ body {
 #row-3 {
     display: flex;
     justify-content: space-between;
+    padding: 1rem 0;
 }
 
 #row-3 {
@@ -103,6 +106,8 @@ body {
     grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: 150px;
     gap: 10px;
+    border: none;
+    padding: 1rem;
 }
 
 .photo-slot {
