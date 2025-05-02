@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generador de Reportes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #report {
+      display: grid;
+      grid-row-gap: 20px;
+      padding: 20px;
+    }
+    #row-1 {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      align-items: center;
+    }
+    .logo {
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .logo img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    #doc-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #doc-title[contenteditable] {
+      outline: none;
+    }
+    #row-2, #row-3 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 20px;
+    }
+    #row-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .field {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 16px;
+    }
+    .field span {
+      font-weight: bold;
+    }
+    #row-4 [contenteditable] {
+      width: 100%;
+      min-height: 100px;
+      border: 1px solid #ccc;
+      padding: 8px;
+      outline: none;
+    }
+    #row-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 150px;
+      gap: 10px;
+    }
+    .photo-slot {
+      border: 2px dashed #aaa;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .photo-slot.horizontal {
+      grid-column: span 2;
+    }
+    .photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #export-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="report">
+    <div id="row-1">
+      <div class="logo" id="logo-left" onclick="uploadLogo('left')">Logo</div>
+      <div id="doc-title" contenteditable>Reporte Fotográfico</div>
+      <div class="logo" id="logo-right" onclick="uploadLogo('right')">Logo</div>
+      <input type="file" id="logo-input" accept="image/*" style="display:none" />
+    </div>
+
+    <div id="row-2">
+      <div class="field"><span>OBRA:</span><div contenteditable>Título de la obra</div></div>
+      <div class="field"><span>FECHA:</span><input type="date" /></div>
+    </div>
+
+    <div id="row-3">
+      <div class="field"><span>HORA DE ENTRADA:</span><input type="time" /></div>
+      <div class="field"><span>HORA DE SALIDA:</span><input type="time" /></div>
+      <div class="field"><span>SUCURSAL:</span><div contenteditable>---</div></div>
+    </div>
+
+    <div id="row-4">
+      <div contenteditable>Observaciones y comentarios...</div>
+    </div>
+
+    <div id="row-5"></div>
+
+    <button id="export-btn" onclick="exportPDF()">Exportar a PDF</button>
+    <input type="file" id="photo-input" accept="image/*" multiple style="display:none" />
+  </div>
+
+  <script>
+    function uploadLogo(side) {
+      const input = document.getElementById('logo-input');
+      input.onchange = () => {
+        const file = input.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            document.getElementById('logo-' + side).innerHTML = '<img src="' + e.target.result + '" />';
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    }
+
+    const grid = document.getElementById('row-5');
+    const photoInput = document.getElementById('photo-input');
+    let slots = [];
+
+    function initSlots() {
+      for (let i = 0; i < 10; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'photo-slot';
+        slot.dataset.index = i;
+        slot.textContent = '+';
+        slot.draggable = true;
+        slot.addEventListener('click', () => photoInput.click());
+        grid.appendChild(slot);
+        slots.push(slot);
+      }
+    }
+
+    photoInput.onchange = () => {
+      const files = Array.from(photoInput.files);
+      files.slice(0, 10).forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = () => {
+            const slot = slots.find(s => !s.querySelector('img'));
+            if (slot) {
+              slot.innerHTML = '';
+              slot.appendChild(img);
+              if (img.naturalWidth > img.naturalHeight) {
+                slot.classList.add('horizontal');
+              } else {
+                slot.classList.remove('horizontal');
+              }
+            }
+          };
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+
+    initSlots();
+
+    let dragSrc = null;
+    document.addEventListener('dragstart', e => {
+      if (e.target.closest('.photo-slot img')) {
+        dragSrc = e.target.closest('.photo-slot');
+      }
+    });
+    document.addEventListener('dragover', e => {
+      if (e.target.closest('.photo-slot')) {
+        e.preventDefault();
+      }
+    });
+    document.addEventListener('drop', e => {
+      const dest = e.target.closest('.photo-slot');
+      if (dest && dragSrc && dest !== dragSrc) {
+        const tmpHTML = dragSrc.innerHTML;
+        const tmpClass = dragSrc.className;
+        dragSrc.innerHTML = dest.innerHTML;
+        dragSrc.className = dest.className;
+        dest.innerHTML = tmpHTML;
+        dest.className = tmpClass;
+      }
+    });
+
+    function exportPDF() {
+      html2pdf().set({
+        margin: 0.5,
+        filename: 'reporte.pdf',
+        html2canvas: { scale: 2 }
+      }).from(document.getElementById('report')).save();
+    }
+  </script>
+</body>
+</html>
