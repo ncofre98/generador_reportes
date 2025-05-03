@@ -42,7 +42,7 @@ body {
     flex: 1;
     border-right: var(--border);
     border-bottom: var(--border);
-    padding: 1rem;
+    padding: 0.5rem;
     align-content: center;
 }
 
@@ -96,8 +96,7 @@ body {
 
 #row-4 [contenteditable] {
     width: 100%;
-    min-height: 100px;
-    border: 1px solid #ccc;
+    outline: 1px solid #ccc;
     padding: 8px;
     outline: none;
 }
