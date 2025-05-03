@@ -1,7 +1,7 @@
 :root {
     --border: 2px solid black;
-    --page-width: 8.5in;
-    --page-height: 11in;
+    --page-width: 11in;
+    --page-height: 8.5in;
 }
 
 * {
