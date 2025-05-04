@@ -116,7 +116,7 @@ body {
 }
 
 .photo-slot {
-    border: 2px dashed #aaa;
+    outline: 2px dashed #aaa;
     position: relative;
     display: flex;
     align-items: center;
