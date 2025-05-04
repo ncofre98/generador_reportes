@@ -63,7 +63,7 @@ function initSlots() {
     for (let i = 0; i < 10; i++) {
         const slot = document.createElement('div');
         slot.className = 'photo-slot';
-        slot.dataset.index = i;
+        slot.dataset.index = i; 
         slot.textContent = '+';
         slot.draggable = true;
         slot.addEventListener('click', () => photoInput.click());
