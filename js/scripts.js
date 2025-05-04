@@ -55,7 +55,7 @@ function resizeAndCompress(file, maxWidth = 800, quality = 0.7) {
     input.click();
   }
 
-const grid = document.getElementById('row-5');
+const grid = document.getElementById('grid');
 const photoInput = document.getElementById('photo-input');
 let slots = [];
 
