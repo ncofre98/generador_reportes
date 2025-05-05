@@ -134,12 +134,12 @@ body {
 }
 
 .photo-slot.horizontal {
-    grid-column: span 2;
+    /*grid-column: span 2;*/
 }
 
 .photo-slot img {
-    width: 100%;
     height: 100%;
+    width: 100%;
     object-fit: contain;
 }
 
