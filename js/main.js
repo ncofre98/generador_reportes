@@ -3,7 +3,7 @@ import { uploadLogo } from "./uploadLogo.js";
 
 const report = document.getElementById('report');
 
-function initSlots(grid, photoInput) {
+function initSlots(grid) {
     const slots = [];
     grid.innerHTML = '';
     
@@ -21,14 +21,66 @@ function initSlots(grid, photoInput) {
 function setupPage(pageElement) {
     const grid = pageElement.querySelector('.grid');
     const photoInput = pageElement.querySelector('.photo-input');
-    const slots = initSlots(grid, photoInput);
+    const slots = initSlots(grid);
     let currentClickedSlot = null;
+    let isDragging = false;
+    let dragSrc = null;
 
-    // Configurar clicks en slots
+    // Configurar eventos de drag and drop
     slots.forEach(slot => {
+        // Drag Start
+        slot.addEventListener('dragstart', function(e) {
+            dragSrc = this;
+            isDragging = true;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+        });
+
+        // Drag End
+        slot.addEventListener('dragend', function() {
+            this.classList.remove('dragging');
+            isDragging = false;
+            dragSrc = null;
+        });
+
+        // Drag Over
+        slot.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('over');
+            e.dataTransfer.dropEffect = 'move';
+        });
+
+        // Drag Leave
+        slot.addEventListener('dragleave', function() {
+            this.classList.remove('over');
+        });
+
+        // Drop
+        slot.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('over');
+            
+            if (dragSrc && dragSrc !== this) {
+                // Guardar estados originales
+                const srcHTML = dragSrc.innerHTML;
+                const srcClasses = dragSrc.className;
+                
+                // Intercambiar contenido
+                dragSrc.innerHTML = this.innerHTML;
+                dragSrc.className = this.className;
+                
+                this.innerHTML = srcHTML;
+                this.className = srcClasses;
+            }
+        });
+
+        // Click para reemplazar foto
         slot.addEventListener('click', () => {
-            currentClickedSlot = slot;
-            photoInput.click();
+            if (!isDragging) {
+                currentClickedSlot = slot;
+                photoInput.click();
+            }
         });
     });
 
@@ -40,61 +92,39 @@ function setupPage(pageElement) {
                 const tinyUrl = await resizeAndCompress(file, 800, 0.7);
                 const img = new Image();
                 img.src = tinyUrl;
+                
                 img.onload = () => {
                     const targetSlot = currentClickedSlot || slots.find(s => !s.querySelector('img'));
-                    if (!targetSlot) return;
                     
-                    targetSlot.innerHTML = '';
-                    targetSlot.appendChild(img);
-                    targetSlot.classList.toggle('horizontal', img.naturalWidth > img.naturalHeight);
-                    
-                    currentClickedSlot = null; // Resetear después de usar
+                    if (targetSlot) {
+                        targetSlot.innerHTML = '';
+                        targetSlot.appendChild(img);
+                        targetSlot.classList.toggle('horizontal', img.naturalWidth > img.naturalHeight);
+                        
+                        // Resetear solo si fue click directo
+                        if (currentClickedSlot) currentClickedSlot = null;
+                    }
                 };
             } catch (err) {
-                console.error('Error:', err);
+                console.error('Error procesando imagen:', err);
             }
         }
         photoInput.value = '';
     };
 
-    // Drag & Drop mejorado
-    let dragSrc = null;
-
-    pageElement.addEventListener('dragstart', e => {
-        if (e.target.closest('.photo-slot')) {
-            dragSrc = e.target.closest('.photo-slot');
-            e.dataTransfer.effectAllowed = 'move';
-        }
-    });
-
-    pageElement.addEventListener('dragover', e => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-    });
-
-    pageElement.addEventListener('drop', e => {
-        const dest = e.target.closest('.photo-slot');
-        if (dest && dragSrc && dest !== dragSrc) {
-            // Intercambiar contenido
-            [dest.innerHTML, dragSrc.innerHTML] = [dragSrc.innerHTML, dest.innerHTML];
-            // Intercambiar clases
-            [dest.className, dragSrc.className] = [dragSrc.className, dest.className];
-        }
-    });
-
     // Configurar logos
     pageElement.querySelectorAll('.logo').forEach(logo => {
-        logo.addEventListener('click', () => {
-            const input = logo.nextElementSibling; // Input debe estar después del logo
-            if (input && input.classList.contains('logo-input')) {
+        logo.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.logo-input');
+            if (input) {
                 input.click();
                 input.onchange = e => {
                     const file = e.target.files[0];
                     if (file) {
-                        logo.innerHTML = '';
+                        this.innerHTML = '';
                         const img = new Image();
                         img.src = URL.createObjectURL(file);
-                        logo.appendChild(img);
+                        this.appendChild(img);
                     }
                 };
             }
@@ -102,25 +132,7 @@ function setupPage(pageElement) {
     });
 }
 
-// Función para duplicar página
-function duplicatePage() {
-    const lastPage = report.querySelector('.page:last-child');
-    if (!lastPage) return;
-    
-    const clone = lastPage.cloneNode(true);
-    
-    // Clonar contenido editable
-    clone.querySelectorAll('[contenteditable]').forEach((el, index) => {
-        const original = lastPage.querySelectorAll('[contenteditable]')[index];
-        el.innerHTML = original.innerHTML;
-    });
-    
-    setupPage(clone);
-    report.appendChild(clone);
-}
-
-// Crear primera página
-function createPage() {
+function createNewPage() {
     fetch('templates/pageTemplate.html')
         .then(res => res.text())
         .then(html => {
@@ -129,8 +141,26 @@ function createPage() {
             const clone = template.content.cloneNode(true);
             setupPage(clone);
             report.appendChild(clone);
-        });
+        })
+        .catch(err => console.error('Error loading template:', err));
 }
 
+function duplicatePage() {
+    const lastPage = report.querySelector('.page:last-child');
+    if (!lastPage) return;
+    
+    const clone = lastPage.cloneNode(true);
+    
+    // Clonar contenido editable
+    const originalEditable = lastPage.querySelectorAll('[contenteditable]');
+    clone.querySelectorAll('[contenteditable]').forEach((el, index) => {
+        el.innerHTML = originalEditable[index]?.innerHTML || '';
+    });
+    
+    setupPage(clone);
+    report.appendChild(clone);
+}
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', createNewPage);
 document.getElementById('duplicate-last').addEventListener('click', duplicatePage);
-document.addEventListener('DOMContentLoaded', createPage);

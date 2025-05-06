@@ -151,18 +151,19 @@ body {
     font-size: 16px;
 }
 
-.photo-slot img {
-    pointer-events: none; /* Permite clicks en el slot */
-    user-select: none; /* Previene selección de texto */
-    -webkit-user-drag: none; /* Desactiva drag nativo en imágenes */
-}
-
 .photo-slot {
     cursor: grab;
+    position: relative;
 }
 
 .photo-slot:active {
     cursor: grabbing;
+}
+
+.photo-slot img {
+    pointer-events: none; /* Permite interactuar con el slot */
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 @media print {
