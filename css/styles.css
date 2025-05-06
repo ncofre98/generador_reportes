@@ -159,6 +159,8 @@ body {
     body * {
         visibility: hidden;
     }
+
+    input
     
     #report, #report * {
         visibility: visible;
@@ -173,4 +175,6 @@ body {
         margin: 0;
         padding: 0;
     }
+
+    input[type="time"] { border: none}
 }
