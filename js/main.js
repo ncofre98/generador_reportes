@@ -1,59 +1,5 @@
-function resizeAndCompress(file, maxWidth = 800, quality = 0.7) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = reject;
-      reader.onload = () => {
-        const img = new Image();
-        img.onerror = reject;
-        img.onload = () => {
-          const scale = Math.min(maxWidth / img.width, 1);
-          const canvas = document.createElement('canvas');
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          canvas.toBlob(
-            blob => {
-              const url = URL.createObjectURL(blob);
-              resolve(url);
-            },
-            'image/jpeg',
-            quality
-          );
-        };
-        img.src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function uploadLogo(side) {
-    const input = document.getElementById('logo-input');
-    input.onchange = async () => {
-      const file = input.files[0];
-      if (file) {
-        try {
-          // 1) Redimensiona y comprime el logo
-          const tinyUrl = await resizeAndCompress(file, 200, 0.8);
-          // 2) Inserta el logo comprimido
-          const logo = document.getElementById('logo-' + side);
-          logo.innerHTML = `<img src="${tinyUrl}" />`;
-          logo.style.outline = 'none';
-        } catch (err) {
-          console.error('Error comprimiendo logo', err);
-          // Si falla, recurre al DataURL original:
-          const reader = new FileReader();
-          reader.onload = e => {
-            const logo = document.getElementById('logo-' + side);
-            logo.innerHTML = `<img src="${e.target.result}" />`;
-            logo.style.outline = 'none';
-          };
-          reader.readAsDataURL(file);
-        }
-      }
-    };
-    input.click();
-  }
+import { resizeAndCompress } from "./compressPhoto.js";
+import { uploadLogo } from "./uploadLogo.js";
 
 const grid = document.getElementById('grid');
 const photoInput = document.getElementById('photo-input');
@@ -119,4 +65,15 @@ document.addEventListener('drop', e => {
         dest.innerHTML = tmpHTML;
         dest.className = tmpClass;
     }
+});
+
+function duplicatePage(photos) {
+    clone = document.querySelector('.page').cloneNode(true);
+}
+
+/* Event Listeners */
+
+document.querySelectorAll('.logo').forEach(logoImg => {
+    const side = logoImg.id.split('-')[1];
+    logoImg.addEventListener('click', () => uploadLogo(side));
 });
