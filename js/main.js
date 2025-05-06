@@ -67,8 +67,12 @@ document.addEventListener('drop', e => {
     }
 });
 
-function duplicatePage(photos) {
-    clone = document.querySelector('.page').cloneNode(true);
+function duplicatePage() {
+    const report = document.getElementById('report');
+    const pages = document.querySelectorAll('.page');
+    const lastPage = pages[pages.length - 1];
+
+    report.appendChild(lastPage.cloneNode(true));
 }
 
 /* Event Listeners */
@@ -77,3 +81,5 @@ document.querySelectorAll('.logo').forEach(logoImg => {
     const side = logoImg.id.split('-')[1];
     logoImg.addEventListener('click', () => uploadLogo(side));
 });
+
+document.getElementById('duplicate-last').addEventListener('click', duplicatePage);

@@ -140,11 +140,17 @@ body {
     object-fit: contain;
 }
 
-#export-btn {
-    margin-top: 20px;
+.buttons {
+    margin-top: 10px;
+}
+.button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+}
+
+#export-btn {
+    font-size: 16px;
 }
 
 @media print {
