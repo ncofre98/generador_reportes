@@ -9,15 +9,13 @@
 }
 
 body,
-#row-5,
+.row-5,
 .logo,
-.photo-slot
-{
+.photo-slot {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 
 body {
     font-family: Arial, sans-serif;
@@ -34,7 +32,7 @@ body {
     min-width: var(--page-width);
     min-height: var(--page-height);
     max-height: var(--page-height);
-    border : var(--border);
+    border: var(--border);
     border-right: none;
     display: flex;
     flex-direction: column;
@@ -44,7 +42,7 @@ body {
     display: flex;
 }
 
-#row-1 {
+.row-1 {
     min-height: 120px;
 }
 
@@ -75,18 +73,17 @@ body {
     max-width: 100%;
 }
 
-
-#doc-title {
+.doc-title {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
 }
 
-#doc-title[contenteditable] {
+.doc-title[contenteditable] {
     outline: none;
 }
 
-#row-3 {
+.row-3 {
     grid-template-columns: repeat(3, 1fr);
 }
 
@@ -101,14 +98,14 @@ body {
     font-weight: bold;
 }
 
-#row-4 [contenteditable] {
+.row-4 [contenteditable] {
     width: 100%;
     outline: 1px solid #ccc;
     padding: 8px;
     outline: none;
 }
 
-#row-5 {
+.row-5 {
     flex: 1;
     border-right: var(--border);
 }
@@ -143,6 +140,7 @@ body {
 .buttons {
     margin-top: 10px;
 }
+
 .button {
     padding: 10px 20px;
     font-size: 16px;
@@ -154,28 +152,25 @@ body {
 }
 
 @media print {
-    /* Oculta todo excepto #report */
     * {
         image-resolution: 72dpi !important;
     }
 
     body * {
-      visibility: hidden;
+        visibility: hidden;
     }
+    
     #report, #report * {
-      visibility: visible;
-      outline: none;
+        visibility: visible;
+        outline: none;
     }
-  
-    /* Asegura que #report ocupe toda la página */
+
     #report {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      /* Quita márgenes del navegador */
-      margin: 0;
-      padding: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
     }
-  }
-  
+}
