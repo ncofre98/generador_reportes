@@ -151,6 +151,20 @@ body {
     font-size: 16px;
 }
 
+.photo-slot img {
+    pointer-events: none; /* Permite clicks en el slot */
+    user-select: none; /* Previene selección de texto */
+    -webkit-user-drag: none; /* Desactiva drag nativo en imágenes */
+}
+
+.photo-slot {
+    cursor: grab;
+}
+
+.photo-slot:active {
+    cursor: grabbing;
+}
+
 @media print {
     * {
         image-resolution: 72dpi !important;

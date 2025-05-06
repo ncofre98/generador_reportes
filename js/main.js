@@ -3,28 +3,34 @@ import { uploadLogo } from "./uploadLogo.js";
 
 const report = document.getElementById('report');
 
-// Función para inicializar slots
 function initSlots(grid, photoInput) {
     const slots = [];
-    grid.innerHTML = ''; // Limpiar solo el grid
+    grid.innerHTML = '';
     
     for (let i = 0; i < 10; i++) {
         const slot = document.createElement('div');
         slot.className = 'photo-slot';
         slot.textContent = '+';
         slot.draggable = true;
-        slot.addEventListener('click', () => photoInput.click());
-        grid.appendChild(slot);
         slots.push(slot);
+        grid.appendChild(slot);
     }
     return slots;
 }
 
-// Función para configurar página
 function setupPage(pageElement) {
     const grid = pageElement.querySelector('.grid');
     const photoInput = pageElement.querySelector('.photo-input');
     const slots = initSlots(grid, photoInput);
+    let currentClickedSlot = null;
+
+    // Configurar clicks en slots
+    slots.forEach(slot => {
+        slot.addEventListener('click', () => {
+            currentClickedSlot = slot;
+            photoInput.click();
+        });
+    });
 
     // Configurar input de fotos
     photoInput.onchange = async () => {
@@ -35,11 +41,14 @@ function setupPage(pageElement) {
                 const img = new Image();
                 img.src = tinyUrl;
                 img.onload = () => {
-                    const emptySlot = slots.find(s => s.textContent === '+');
-                    if (!emptySlot) return;
-                    emptySlot.innerHTML = '';
-                    emptySlot.appendChild(img);
-                    emptySlot.classList.toggle('horizontal', img.naturalWidth > img.naturalHeight);
+                    const targetSlot = currentClickedSlot || slots.find(s => !s.querySelector('img'));
+                    if (!targetSlot) return;
+                    
+                    targetSlot.innerHTML = '';
+                    targetSlot.appendChild(img);
+                    targetSlot.classList.toggle('horizontal', img.naturalWidth > img.naturalHeight);
+                    
+                    currentClickedSlot = null; // Resetear después de usar
                 };
             } catch (err) {
                 console.error('Error:', err);
@@ -48,19 +57,28 @@ function setupPage(pageElement) {
         photoInput.value = '';
     };
 
-    // Configurar drag & drop
+    // Drag & Drop mejorado
     let dragSrc = null;
+
     pageElement.addEventListener('dragstart', e => {
-        dragSrc = e.target.closest('.photo-slot');
+        if (e.target.closest('.photo-slot')) {
+            dragSrc = e.target.closest('.photo-slot');
+            e.dataTransfer.effectAllowed = 'move';
+        }
     });
-    
-    pageElement.addEventListener('dragover', e => e.preventDefault());
-    
+
+    pageElement.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    });
+
     pageElement.addEventListener('drop', e => {
         const dest = e.target.closest('.photo-slot');
         if (dest && dragSrc && dest !== dragSrc) {
+            // Intercambiar contenido
             [dest.innerHTML, dragSrc.innerHTML] = [dragSrc.innerHTML, dest.innerHTML];
-            [dest.className, dest.className] = [dragSrc.className, dragSrc.className];
+            // Intercambiar clases
+            [dest.className, dragSrc.className] = [dragSrc.className, dest.className];
         }
     });
 
