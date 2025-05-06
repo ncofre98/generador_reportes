@@ -1,3 +1,5 @@
+import { resizeAndCompress } from "./compressPhoto.js";
+
 function uploadLogo(side) {
     const input = document.getElementById('logo-input');
     console.log(input);
