@@ -2,6 +2,9 @@ import { resizeAndCompress } from "./compressPhoto.js";
 import { uploadLogo } from "./uploadLogo.js";
 
 const report = document.getElementById('report');
+const duplicateBtn = document.getElementById('duplicate-last');
+const deleteBtn = document.getElementById('delete-last');
+let nPages = 1;
 
 function initSlots(grid) {
     const slots = [];
@@ -158,16 +161,22 @@ function duplicatePage() {
     
     setupPage(clone);
     report.appendChild(clone);
-}
-
-function deletePage(node) {
-
+    nPages++;
 }
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', createNewPage);
-document.getElementById('duplicate-last').addEventListener('click', duplicatePage);
-document.getElementById('delete-last').addEventListener('click', () => {
+
+duplicateBtn.addEventListener('click', () => {
+    duplicatePage()
+    if (nPages > 1 && !(duplicateBtn.hasAttribute('disabled')))
+        deleteBtn.removeAttribute('disabled');
+});
+deleteBtn.addEventListener('click', () => {
     const pages = document.querySelectorAll('.page');
     pages[pages.length - 1].remove();
+    nPages--;
+
+    if (nPages < 2)
+        deleteBtn.setAttribute('disabled', 'true');
 })
