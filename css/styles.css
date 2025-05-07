@@ -2,6 +2,9 @@
     --border: 3px solid rgb(78, 78, 78);
     --page-width: 11in;
     --page-height: 8in;
+    --font-family: 'Arial', 'Calibri', sans-serif;
+    --doc-title-font-family: 'Baskerville Old Face', 'Arial', sans-serif;
+    --doc-title-weight : normal;
 }
 
 *, *::before, *::after {
@@ -18,8 +21,8 @@ body,
 }
 
 body {
-    font-family: Arial, sans-serif;
     flex-direction: column;
+    font-family: var(--font-family);
 }
 
 .report {
@@ -75,8 +78,10 @@ body {
 
 .doc-title {
     text-align: center;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 32px;
+    font-family: var(--doc-title-font-family);
+    font-weight: var(--doc-title-weight);
+    outline: none;
 }
 
 .doc-title[contenteditable] {

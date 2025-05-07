@@ -10,7 +10,6 @@ function initSlots(grid) {
     for (let i = 0; i < 10; i++) {
         const slot = document.createElement('div');
         slot.className = 'photo-slot';
-        slot.textContent = '+';
         slot.draggable = true;
         slots.push(slot);
         grid.appendChild(slot);
@@ -161,6 +160,14 @@ function duplicatePage() {
     report.appendChild(clone);
 }
 
+function deletePage(node) {
+
+}
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', createNewPage);
 document.getElementById('duplicate-last').addEventListener('click', duplicatePage);
+document.getElementById('delete-last').addEventListener('click', () => {
+    const pages = document.querySelectorAll('.page');
+    pages[pages.length - 1].remove();
+})
