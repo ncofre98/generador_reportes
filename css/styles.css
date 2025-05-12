@@ -5,6 +5,7 @@
     --font-family: 'Arial', 'Calibri', sans-serif;
     --doc-title-font-family: 'Baskerville Old Face', 'Arial', sans-serif;
     --doc-title-weight : normal;
+    --report-background-color: rgb(94, 94, 94);
 }
 
 *, *::before, *::after {
@@ -23,11 +24,25 @@ body,
 body {
     flex-direction: column;
     font-family: var(--font-family);
+    background: #000000;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    min-height: 100vh;
+}
+
+.title {
+    color: white;
+}
+
+.page,
+.report {
+    background-color: white;
 }
 
 .report {
-    outline: 3px solid rgb(235, 235, 235);
+    outline: 3px solid var(--report-background-color);
     padding: 0 1rem;
+    background-color: var(--report-background-color);
 }
 
 .page {
@@ -40,6 +55,7 @@ body {
     border-right: none;
     display: flex;
     flex-direction: column;
+    margin-bottom: 1rem;
 }
 
 .row {
@@ -144,13 +160,34 @@ body {
 }
 
 .buttons {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .button {
-    padding: 10px 20px;
+    padding: 12px 20px;
     font-size: 16px;
     cursor: pointer;
+    border-radius: 8px;
+    border: 0;
+    
+}
+
+.button:hover {
+    filter: brightness(85%);
+    transform: scale(1.01);
+    transition: transform 0.2s ease;
+}
+
+#duplicate-last {
+    background-color: #80D9FF;
+}
+
+#delete-last {
+    background-color: #FF8099;
+}
+
+#export-btn {
+    background-color: #5BCD9A;
 }
 
 #export-btn {

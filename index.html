@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Generador de Reportes</title>
+    <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -17,9 +18,9 @@
         
     </div>
     <div class="buttons">
-        <button id="duplicate-last" class="button">Duplicar última página</button>
-        <button disabled id="delete-last" class="button">Eliminar la última página</button>
-        <button id="export-btn" class="button" onclick="window.print()">Exportar a PDF</button>
+        <button id="duplicate-last" class="button"><i class="icon-plus"></i>Duplicar última página</button>
+        <button disabled id="delete-last" class="button"><i class="icon-minus"></i>Eliminar la última página</button>
+        <button id="export-btn" class="button" onclick="window.print()"><i class="icon-floppy"></i>Exportar a PDF</button>
     </div>
     <script type="module" src="js/main.js"></script>
 </body>
