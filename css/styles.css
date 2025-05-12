@@ -24,14 +24,11 @@ body,
 body {
     flex-direction: column;
     font-family: var(--font-family);
-    background: #000000;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     min-height: 100vh;
 }
 
-.title {
-    color: white;
+.report {
+    box-shadow: 10px 10px 21px 0px rgba(0,0,0,0.49);
 }
 
 .page,
@@ -169,12 +166,12 @@ body {
     cursor: pointer;
     border-radius: 8px;
     border: 0;
-    
+    box-shadow: 7px 10px 9px 0px rgba(0,0,0,0.27);
 }
 
 .button:hover {
-    filter: brightness(85%);
-    transform: scale(1.01);
+    filter: brightness(95%);
+    transform: scale(1.02);
     transition: transform 0.2s ease;
 }
 
