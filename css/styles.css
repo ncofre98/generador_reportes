@@ -31,6 +31,7 @@ body {
 }
 
 .page {
+    position: relative;
     max-width: var(--page-width);
     min-width: var(--page-width);
     min-height: var(--page-height);
@@ -171,6 +172,24 @@ body {
     -webkit-user-drag: none;
 }
 
+/* Number of pages */
+
+body {
+    counter-reset: page; /* Inicializa el contador */
+  }
+
+  .page::after {
+    counter-increment: page; /* Incrementa el contador por cada .page */
+    content: "Página " counter(page);
+    display: block;
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+}
+
+/* Print Media Queries */
+
 @media print {
     * {
         image-resolution: 72dpi !important;
@@ -194,6 +213,10 @@ body {
         width: 100%;
         margin: 0;
         padding: 0;
+    }
+
+    .page::after {
+        display: none;
     }
 
     .page {
